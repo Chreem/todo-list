@@ -1,9 +1,10 @@
 <template>
     <div id="todo_list">
         <input type="text" v-model="newItem" @keyup.enter="addNewItem">
+        <button @click="addNewItem">Add</button>
         <ul>
             <li v-for="(item,index) in itemList">
-                <item @itemClick="removeItem(index)">{{item.content}}</item>
+                <item @itemClick="removeItem(index,item.objectId)">{{item.todo}}</item>
             </li>
         </ul>
     </div>
@@ -11,6 +12,7 @@
 
 <script>
 import item from './item.vue'
+import service from '../service.js'
 
 export default {
     name: 'TodoList',
@@ -26,17 +28,20 @@ export default {
     },
     methods: {
         getItems() {
-            this.itemList = [{
-                content: 'todo',
-                finished: false
-            }];
+            // LeanCloud API
+            (async data => {
+                data.itemList = (await service.readItems()).data.results;
+            })(this.$data);
         },
         addNewItem() {
-            this.itemList.unshift({ content: this.newItem });
+            if (this.newItem === '') return;
+            this.itemList.unshift({ todo: this.newItem });
+            service.addNewItem(this.newItem);
             this.newItem = '';
         },
-        removeItem(index) {
-            this.itemList.splice(index, 1)
+        removeItem(index, objId) {
+            this.itemList.splice(index, 1);
+            service.deleteItem(objId);
         }
     }
 }

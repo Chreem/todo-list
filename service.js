@@ -12,19 +12,30 @@ const headers = {
 };
 const requestURL = ApiURL + ClassName;
 module.exports = {
+    /**
+     * 获取所有todos
+     */
     readItems() {
         return axios.get(requestURL, { headers })
-            .then(res => {
-                return res.data;
-            });
     },
 
     /**
      * 传入todo仅为字符串
-     * @param {*} todo 
+     * @param {string} todo 
      */
     addNewItem(todo) {
         todo = typeof todo === 'string'
-            ? todo : todo.toString()
+            ? todo : todo.toString();
+        return axios.post(requestURL, { todo }, { headers })
+    },
+
+    /**
+     * 仅接受objectId
+     * @param {string} objectId 
+     */
+    deleteItem(objectId) {
+        objectId = typeof objectId === 'string'
+            ? objectId : objectId.toString()
+        return axios.delete(requestURL + '/' + objectId, { headers })
     }
 }
