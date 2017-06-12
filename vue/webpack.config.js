@@ -1,5 +1,7 @@
-const path = require('path');
-const merge = require('webpack-merge');
+const path = require('path')
+    , merge = require('webpack-merge')
+    , HtmlWebpackPlugin = require('html-webpack-plugin')
+    ;
 
 const baseConfig = require('../webpack.config.js')
 
@@ -16,5 +18,13 @@ module.exports = merge(baseConfig, {
         alias: {
             vue: 'vue/dist/vue.js'
         }
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Vue-Todos',
+            content: '<Todo></Todo>',
+            template: '../index.template.ejs',
+            filename: './index.html'
+        })
+    ]
 });
