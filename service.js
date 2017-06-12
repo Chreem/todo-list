@@ -17,6 +17,7 @@ module.exports = {
      */
     readItems() {
         return axios.get(requestURL, { headers })
+            .then(res => res.data.results);
     },
 
     /**
@@ -24,8 +25,7 @@ module.exports = {
      * @param {string} todo 
      */
     addNewItem(todo) {
-        todo = typeof todo === 'string'
-            ? todo : todo.toString();
+        if (!typeof todo === 'string') return
         return axios.post(requestURL, { todo }, { headers })
     },
 
@@ -34,8 +34,7 @@ module.exports = {
      * @param {string} objectId 
      */
     deleteItem(objectId) {
-        objectId = typeof objectId === 'string'
-            ? objectId : objectId.toString()
+        if (!typeof objectId === 'string') return
         return axios.delete(requestURL + '/' + objectId, { headers })
     }
 }
