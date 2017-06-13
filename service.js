@@ -27,6 +27,7 @@ module.exports = {
     addNewItem(todo) {
         if (!typeof todo === 'string') return
         return axios.post(requestURL, { todo }, { headers })
+            .then(res => res.data)
     },
 
     /**
