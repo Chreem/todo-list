@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="app" class="container">
         <div class="row">
             <a class="btn btn-success" href="./index.html?mode=constructor">Constructor</a>
         </div>
@@ -29,6 +29,10 @@
                 <input id="mainCheckbox" type="checkbox" class="">ob
                 <div id="observerContainer"></div>
             </div>
+        </div>
+        <div class="row">
+            Vue {{test}}
+            <my-component prop-a="hehe"></my-component>
         </div>
 
         <div class="row">
@@ -63,42 +67,17 @@
     </script>
 
     <!-- 观察者模式 -->
-    <script type="module">
-        import Subject from './observer/subject.js'
-
-        function ob() {
-            this.Update = function () {
-                console.log('value updated')
-            }
-        }
-
-        function extend(extension, obj) {
-            for (let key in obj) {
-                extension[key] = obj[key]
-            }
-        }
-
-        function AddNewObserver() {
-            let check = document.createElement('input');
-            check.type = "checkbox";
-            extend(check, new ob());
-            check.Update = function (value) {
-                this.checked = value;
-            }
-
-            mainCheckbox.AddObserver(check);
-            observerContainer.appendChild(check);
-        }
-
-        extend(mainCheckbox, new Subject());
-        mainCheckbox["onclick"] = function(){
-            mainCheckbox.Notify(mainCheckbox.checked)
-        }
-        addNewObserver["onclick"] = AddNewObserver
-    </script>
+    <!-- <script type="module">
+        import Subject from './observer/subject.js' function ob() { this.Update = function () { console.log('value updated') } }
+        function extend(extension, obj) { for (let key in obj) { extension[key] = obj[key] } } function AddNewObserver()
+        { let check = document.createElement('input'); check.type = "checkbox"; extend(check, new ob()); check.Update = function
+        (value) { this.checked = value; } mainCheckbox.AddObserver(check); observerContainer.appendChild(check); } extend(mainCheckbox,
+        new Subject()); mainCheckbox["onclick"] = function(){ mainCheckbox.Notify(mainCheckbox.checked) } addNewObserver["onclick"]
+        = AddNewObserver
+    </script> -->
 
     <script type="module">
-        import Test from './test.js'
+        // import Test from './test.js'
     </script>
 </body>
 
