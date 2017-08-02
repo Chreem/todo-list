@@ -15,7 +15,7 @@
 
 <script>
 import item from './item.vue'
-import service from '../service.js'
+import service from '../../../../service.js'
 
 export default {
     name: 'TodoList',

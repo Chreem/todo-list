@@ -67,18 +67,23 @@
     </script>
 
     <!-- 观察者模式 -->
-    <!-- <script type="module">
-        import Subject from './observer/subject.js' function ob() { this.Update = function () { console.log('value updated') } }
-        function extend(extension, obj) { for (let key in obj) { extension[key] = obj[key] } } function AddNewObserver()
-        { let check = document.createElement('input'); check.type = "checkbox"; extend(check, new ob()); check.Update = function
-        (value) { this.checked = value; } mainCheckbox.AddObserver(check); observerContainer.appendChild(check); } extend(mainCheckbox,
-        new Subject()); mainCheckbox["onclick"] = function(){ mainCheckbox.Notify(mainCheckbox.checked) } addNewObserver["onclick"]
-        = AddNewObserver
-    </script> -->
-
     <script type="module">
-        // import Test from './test.js'
-    </script>
+        import Subject from './observer/subject.js';
+        function ob() { this.Update = function () { console.log('value updated') } }
+        function extend(extension, obj) { for (let key in obj) { extension[key] = obj[key] } }
+        function AddNewObserver() {
+            let check = document.createElement('input');
+            check.type = "checkbox";
+            extend(check, new ob());
+            check.Update = function (value) { this.checked = value; }
+            mainCheckbox.AddObserver(check);
+            observerContainer.appendChild(check);
+        }
+        extend(mainCheckbox, new Subject());
+        mainCheckbox["onclick"] = function () { mainCheckbox.Notify(mainCheckbox.checked) }
+        addNewObserver["onclick"] = AddNewObserver
+    </script> 
+
 </body>
 
 </html>

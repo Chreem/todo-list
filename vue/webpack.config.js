@@ -12,6 +12,8 @@ module.exports = merge(baseConfig, {
     module: {
         rules: [
             { test: /\.vue$/, loader: 'vue-loader', options: {/* vue-loader options go here*/ } },
+            { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
+            { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
         ]
     },
     resolve: {
