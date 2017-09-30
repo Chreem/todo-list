@@ -31,6 +31,4 @@ class XProductProto extends HTMLElement {
 }
 
 // Register the new element.
-var XProduct = document.registerElement('x-product', {
-    prototype: XProductProto.prototype
-});
+var XProduct = document.registerElement('x-product', XProductProto);
