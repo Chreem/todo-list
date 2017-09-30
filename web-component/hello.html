@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <template id="hello">
+        <style>
+            h1 {
+                color: red
+            }
+        </style>
+        <h1>test</h1>
+
+        <x-product data-img="http://localhost:4000/head.jpg"></x-product>
+        <script src="x-product.js"></script>
+    </template>
+
+    <script>
+        const indexDoc = document;
+        const helloDoc = document.currentScript.ownerDocument;
+        const hello = helloDoc.querySelector('#hello');
+
+        class Hello extends HTMLElement {
+            createdCallback() {
+                let shadow = this.createShadowRoot();
+                shadow.appendChild(indexDoc.importNode(hello.content, true));
+            }
+        }
+        indexDoc.registerElement('hello-component', { prototype: Hello.prototype })
+    </script>
+</body>
+
+</html>
