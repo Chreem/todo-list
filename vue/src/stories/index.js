@@ -46,6 +46,7 @@ const TypingContent = [
     'will loop'
 ]
 
+import carousel from './carousel';
 storiesOf('Components', module)
     .add('Todo', () => ({
         components: { Todo },
@@ -65,5 +66,9 @@ storiesOf('Components', module)
     .add('扫雷', () => ({
         components: { MineSweeper },
         template: '<MineSweeper></MineSweeper>'
+    }))
+    .add('轮播', () => ({
+        components: { carousel },
+        template: '<carousel></carousel>'
     }))
     ;
