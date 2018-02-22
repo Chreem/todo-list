@@ -1,5 +1,6 @@
 import React from 'react'
 import Swiper from 'swiper'
+import PropTypes from 'prop-types'
 import './full.css'
 
 /**
@@ -25,11 +26,9 @@ function arrayFormat(arr) {
     return newArr;
 }
 
-export default class FullPage extends React.Component {
+class FullPage extends React.Component {
     constructor(props) {
         super(props);
-
-        this.handleNextSlideClick = this.handleNextSlideClick.bind(this);
     }
 
     /**
@@ -60,7 +59,13 @@ export default class FullPage extends React.Component {
             <div className="swiper-wrapper">
                 {children.map((item, index) => <div key={index} className="swiper-slide">{item}</div>)}
             </div>
-            {hasArrow ? <img className="slidetip-down" src={require('./up.png')} alt="上划" onClick={this.handleNextSlideClick} /> : ''}
+            {hasArrow ? <img className="slidetip-down" src={require('./up.png')} alt="上划" onClick={this.handleNextSlideClick.bind(this)} /> : ''}
         </div>
     }
 }
+
+FullPage.propTypes = {
+    id: PropTypes.string.isRequired
+}
+
+export default FullPage
