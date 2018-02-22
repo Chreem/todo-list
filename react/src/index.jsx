@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './app.jsx'
 
-import './js/calcRootSize'
+import './js/rootSize'
 
 if (process.env.NODE_ENV !== 'production') {
     const AppContainer = require('react-hot-loader').AppContainer;
