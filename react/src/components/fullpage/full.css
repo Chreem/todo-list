@@ -1,0 +1,32 @@
+.swiper-slide img{
+    width: 100%;
+}
+
+@keyframes uparrow-jump{
+    0%{
+        bottom: 2rem;
+    }
+    50%{
+        bottom: 3rem;
+    }
+    100%{
+        bottom: 2rem;
+    }
+}
+
+.slidetip-down{
+    position: absolute;
+    z-index: 2000;
+    left: 50%;
+    bottom: 2rem;
+    transform: translate(-50%,0);
+    
+    font-size: 5rem;
+    color:gray;
+
+    animation: uparrow-jump 1.2s ease-out infinite;
+}
+
+img.slidetip-down{
+    width: 5rem;
+}
