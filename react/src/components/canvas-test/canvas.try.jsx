@@ -29,7 +29,7 @@ class Canvas extends React.Component {
 
     render() {
         const { id, width, height } = this.props;
-        return <canvas id={id} width={width} height={height}>
+        return <canvas id={id} width={width} height={height} onClick={this.props.onClick}>
             browser too old to open canvas
         </canvas>
     }
