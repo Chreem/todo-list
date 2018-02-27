@@ -1,54 +1,71 @@
 import React from 'react'
 import './css/index.css'
-import Fullpage from './components/fullpage'
-import Swiper from 'swiper'
-import 'swiper/dist/css/swiper.min.css'
+import Canvas from './components/canvas-test'
 
 import jsonp from './js/jsonp'
 
-export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            posts: []
-        };
 
-        const self = this;
-        (async function () {
-            let resu = await $.get('https://jsonplaceholder.typicode.com/posts')
-            self.setState({
-                posts: resu
-            })
-        })()
+const sun = new Image();
+const moon = new Image();
+const earth = new Image();
+sun.src = require('./assets/star/sun.png');
+moon.src = require('./assets/star/moon.png');
+earth.src = require('./assets/star/earth.png');
+
+
+class ball {
+    constructor(x = 0, y = 0, radius = 25, color = 'blue') {
+        this.x = x
+        this.y = y
+        this.radius = radius;
+        this.color = color;
     }
 
-    async componentDidMount() {
-        const postEl = document.querySelector('#posts');
-        postEl.parentNode.style.overflow = 'auto'
+    setSpeed(vx, vy) {
+        this.vx = vx;
+        this.vy = vy;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+const b = new ball(100, 100);
+b.setSpeed(5, 2)
+function draw(canvas) {
+    const ctx = canvas.getContext('2d')
+    // ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(0,0,0,.1)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    b.draw(ctx)
+    b.x += b.vx;
+    b.y += b.vy;
+    b.vy *= .99;
+    b.vy += .25;
+
+    if (b.y + b.vy > canvas.height || b.y + b.vy < 0) b.vy = -b.vy
+    if (b.x + b.vx > canvas.height || b.x + b.vx < 0) b.vx = -b.vx
+}
+
+export default class App extends React.Component {
+    componentDidMount() {
+        test.style.transformOrigin = "0 0";
+        test.style.transform = "scale(2)"
+
     }
 
     render() {
-        const posts = this.state.posts.map(item => <div key={item.id}>
-            <span>{item.id}</span>
-            <span>{item.title}</span>
-            <span>{item.body}</span>
-        </div>);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
 
-        return <Fullpage id="app" config={{
-            effect: 'cube',
-            cubeEffect: {
-                slideShadows: false,
-                shadow: false
-            }
-        }}>
-            <img src={require('./assets/首页效果图.jpg')} alt="首页" />
-            <Fullpage id="spots" config={{ effect: 'fade', direction: 'vertical', upArrow: true }}>
-                {(r => r.keys().map(item => {
-                    return <img key={item} src={item} alt="景点" />
-                }))(require.context('./assets/2', false, /\.jpg$/))}
-            </Fullpage>
-            <img src={require('./assets/3.jpg')} alt="尾页" />
-            <div id="posts" style={{ color: 'white' }}>{posts}</div>
-        </Fullpage>
+        return <div className="canvasSet">
+            <Canvas id="test" width={w / 2} height={h / 2} onDraw={draw}></Canvas>
+        </div>
     }
 }
