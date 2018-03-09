@@ -9,19 +9,19 @@
 
 ## 项目结构
 
-接口设计灵感来源为laravel-mix，内部自己实现，如何使用见顶层[webpack.config.js](./tree/master/webpack-mix/webpack.config.js)（反正只有自己用）
+接口设计灵感来源为laravel-mix，内部自己实现，如何使用见顶层[webpack.config.js](https://github.com/Chreem/todo-list/tree/master/webpack-mix/webpack.config.js)（反正只有自己用）
 
 ## hello world
 
-1. [message-queue](./tree/master/message-queue)
+1. [message-queue](https://github.com/Chreem/todo-list/tree/master/message-queue)
 
     amqp协议消息队列的生产-消费者hello world
 
-2. [web-component](./tree/master/web-component)
+2. [web-component](https://github.com/Chreem/todo-list/tree/master/web-component)
 
     WebComponent的hello world，分为html与js版，均使用es6 class写法
 
-3. [dns](./tree/master/dns)
+3. [dns](https://github.com/Chreem/todo-list/tree/master/dns)
 
     node自带dns模块初试
 
