@@ -1,6 +1,7 @@
 const webpack = require('webpack')
     , merge = require('webpack-merge')
     , path = require('path')
+    , rimraf = require('rimraf')
     , BrowserSyncPlugin = require('browser-sync-webpack-plugin')
     , ExtractTextPlugin = require('extract-text-webpack-plugin')
     , HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -25,10 +26,11 @@ class Mix {
         this.devMode = true;
         this.isReact = false;
         this.isVue = false;
+        this.outputPath = path.resolve(__dirname, `.${this.basePath}dist`);
         this.config = {
             entry: {},
             output: {
-                path: path.resolve(__dirname, `.${this.basePath}dist`),
+                path: this.outputPath,
                 filename: '[name].[hash:5].js',
             },
             module: {
@@ -44,7 +46,18 @@ class Mix {
                     template: this.basePath + 'index.template.html',
                     filename: 'index.html'
                 })
-            ]
+            ],
+            optimization: {
+                splitChunks: {
+                    cacheGroups: {
+                        commons: {
+                            test: /[\\/]node_modules[\\/]/,
+                            name: 'vendors',
+                            chunks: "all",
+                        }
+                    }
+                }
+            }
         };
     }
 
@@ -97,7 +110,7 @@ class Mix {
         this.config.devtool = 'cheap-module-eval-source-map';
         this.config.plugins.push(new BrowserSyncPlugin({
             host: 'localhost',
-            port: 4000,
+            port: 80,
             open: false,
             proxy: 'http://localhost:8080'
         }, {reload: false}));
@@ -118,6 +131,7 @@ class Mix {
         });
         this.config.plugins.push(new ExtractTextPlugin('style.[hash:5].css'));
         if (!!publicPath) this.config.output.publicPath = publicPath;
+        rimraf(this.outputPath, () => console.log(this.outputPath + ' is clean'));
         return this.config;
     }
 }
