@@ -1,7 +1,5 @@
-.vscode
 .idea
-dist/
+.vscode
 node_modules/
 package-lock.json
-
-wxshare.js
+dist

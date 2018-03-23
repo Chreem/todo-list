@@ -4,7 +4,7 @@ process.env.NODE_ENV === 'development'
 
 import React from 'react'
 import ReactDom from 'react-dom'
-import Root from './root.jsx'
+import Root from './app.jsx'
 
 /**
  * some adapter for hot-loader
@@ -16,18 +16,18 @@ if (process.env.NODE_ENV === 'development') {
             <AppContainer>
                 <Component/>
             </AppContainer>,
-            document.getElementById('root')
+            document.getElementById('app')
         );
     };
 
     render(Root);
 
     if (module.hot) {
-        module.hot.accept('./root.jsx', () => {
-            const NextRoot = require('./root.jsx').default;
+        module.hot.accept('./app.jsx', () => {
+            const NextRoot = require('./app.jsx').default;
             render(NextRoot)
         })
     }
 } else {
-    ReactDom.render(<Root/>, document.getElementById('root'));
+    ReactDom.render(<Root/>, document.getElementById('app'));
 }

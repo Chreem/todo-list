@@ -19,6 +19,30 @@ function selfFoundLoader(name) {
     return this.config.module.rules.filter(item => item.test.test(name))[0]
 }
 
+let vendorPriority = 0;
+
+function selfFormatVendors(vendors) {
+    vendors.map(({name, chunks}) => {
+        let chunkStr = '';
+        if (chunks.length >= 1) {
+            chunks.map(chunk => {
+                chunkStr += chunk + '|'
+            });
+            chunkStr = chunkStr.slice(0, -1);
+            chunkStr = `(${chunkStr})`;
+        }
+        this.config.optimization.splitChunks.cacheGroups[name] = {
+            name,
+            filename: name + '.js',
+            priority: vendorPriority -= 10,
+            test: new RegExp('[\\\\/]node_modules[\\\\/]' + chunkStr),
+            chunks: 'all'
+        }
+    });
+}
+
+const vendors = [];
+
 class Mix {
     constructor(basePath) {
         this.basePath = basePath || './';
@@ -38,8 +62,19 @@ class Mix {
                     {test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/},
                     {test: /\.css$/, loader: ['style-loader', 'css-loader', 'postcss-loader']},
                     {test: /\.less$/, loader: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']},
-                    {test: /\.(jpg|png|gif|svg)$/, loader: 'url-loader', options: {limit: 4096, name: '[name].[ext]'}},
+                    {test: /\.mp3$/, loader: 'file-loader', options: {name: '[name].[ext]'}},
+                    {
+                        test: /\.(jpg|png|gif|svg)$/,
+                        loader: 'url-loader',
+                        options: {limit: 4096, name: '[name].[ext]'}
+                    },
                 ]
+            },
+            resolve: {
+                alias: {
+                    '~components': path.resolve('./components'),
+                    '~vendor': path.resolve('./vendor')
+                }
             },
             plugins: [
                 new HtmlWebpackPlugin({
@@ -49,16 +84,12 @@ class Mix {
             ],
             optimization: {
                 splitChunks: {
-                    cacheGroups: {
-                        commons: {
-                            test: /[\\/]node_modules[\\/]/,
-                            name: 'vendors',
-                            chunks: "all",
-                        }
-                    }
+                    cacheGroups: {}
                 }
             }
         };
+
+        this.webpackConfig = this.webpackConfig.bind(this)
     }
 
     js() {
@@ -94,13 +125,27 @@ class Mix {
         return this;
     }
 
+    vendor(p, name) {
+        name = name || 'vendor';
+        if (!vendors.filter(item => (item.name === name))[0]) {
+            vendors.push({name, chunks: []})
+        }
+        if (!p) return this;
+        const vendor = vendors.filter(item => (item.name === name))[0];
+        if (p.constructor === String) {
+            vendor.chunks.push(p)
+        } else if (p.constructor === Array) {
+            vendor.chunks = vendor.chunks.concat(p);
+        }
+        return this;
+    }
+
     webpackConfig(config) {
         this.config = merge(this.config, config);
         return this;
     }
 
     output(outpath) {
-        this.cleanPath = outpath;
         this.config.output.path = path.resolve(__dirname) + outpath;
         return this;
     }
@@ -131,7 +176,8 @@ class Mix {
         });
         this.config.plugins.push(new ExtractTextPlugin('style.[hash:5].css'));
         if (!!publicPath) this.config.output.publicPath = publicPath;
-        rimraf(this.outputPath, () => console.log(this.outputPath + ' is clean'));
+        if (vendors.length >= 1) selfFormatVendors.call(this, vendors);
+        rimraf(this.config.output.path, () => console.log(this.config.output.path + ' is clean'));
         return this.config;
     }
 }

@@ -1,5 +1,7 @@
 const path = require('path');
-let config = {};
+const webpack = require('webpack');
+let config = undefined;
+let url = undefined;
 const Mix = require('./config/webpack.mix');
 
 // const project = new Mix('./project-name/');
@@ -10,8 +12,25 @@ const Mix = require('./config/webpack.mix');
 // vueProject.vue('index.js');
 // config = vueProject;
 
-const reactProject = new Mix('./project-react');
-reactProject.react('index.jsx');
-config = reactProject;
+// const yk = new Mix('./project/yk');
+// yk.react('index.jsx')
+// config = yk;
+// url = 'http://n.sinaimg.cn/hb/yk/';
 
-module.exports = process.env.NODE_ENV === 'production' ? config.prod() : config.dev();
+// const fxdhs = new Mix('./project/20180314-fxdhs');
+// fxdhs.vue('index.js');
+// config = fxdhs;
+
+const fxdhs = new Mix('./project/20180314-fxdhs');
+fxdhs.react('index.js');
+config = fxdhs;
+url = 'http://n.sinaimg.cn/hb/fxdhs/';
+
+// TODO 新项目往这加
+
+
+// TODO vendor在css加载上有bug待解决
+// .vendor(['react', 'jquery'], 'common')
+// .vendor();
+
+module.exports = process.env.NODE_ENV === 'production' ? config.prod(url) : config.dev();
