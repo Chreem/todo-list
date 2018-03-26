@@ -1,12 +1,14 @@
 # todo-list
 
-~~放置如项目模板等工程初始化结构，使用时CV即可~~
+项目结构已移至chr-library, 前端工作中总结的库也在其中
 
-参考laravel-mix
+本仓库只写些hello world更符合名称
 
-今后可能加入npm-cli来自动生成  
-此外也有hello world
+## old
 
+### v2
+
+```md
 ## 项目结构
 
 接口设计灵感来源为laravel-mix，内部自己实现，如何使用见顶层[webpack.config.js](https://github.com/Chreem/todo-list/tree/master/webpack-mix/webpack.config.js)（反正只有自己用）
@@ -24,8 +26,9 @@
 3. [dns](https://github.com/Chreem/todo-list/tree/master/dns)
 
     node自带dns模块初试
+```
 
-## old
+### v1
 
 ```md
 ## 项目结构
