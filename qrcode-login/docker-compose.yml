@@ -1,0 +1,58 @@
+version: '3'
+services:
+  web:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./ngx-conf:/etc/nginx/conf.d
+      - ./fe/dist:/usr/share/nginx/qrcode
+    networks:
+      frontend:
+        ipv4_address: 192.168.1.11
+      backend:
+        ipv4_address: 192.168.2.10
+
+  auth_server:
+    image: node
+    volumes: 
+      - ./node:/root/html
+    working_dir: /root/html
+    expose:
+      - 4000
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        npm i
+        node index.js
+    networks:
+      backend: 
+        ipv4_address: 192.168.2.11
+    depends_on:
+      - redis
+      
+  redis:
+    image: redis
+    networks:
+      backend:
+        ipv4_address: 192.168.2.12
+
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.1.0/24
+
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.2.0/24
+
+  # container on backend do(should) not add 'ports' param
